@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Send Telegram Message</title>
+</head>
+<body>
+  <h1>Send Message to Telegram</h1>
+  <form id="form">
+    <input type="text" id="message" placeholder="Enter message" required />
+    <button type="submit">Send</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('message').value;
+      const res = await fetch('/api/sendMessage?text=' + encodeURIComponent(msg));
+      const data = await res.json();
+      document.getElementById('result').innerText = data.ok ? 'Sent!' : 'Failed';
+    });
+  </script>
+</body>
+</html>
