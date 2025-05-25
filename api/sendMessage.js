@@ -1,26 +1,21 @@
+import fetch from "node-fetch";
+
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).end();
-
-  const { text, uid } = req.body;
+  const { uid, text } = req.body;
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.ADMIN_CHAT_ID; // Add your Telegram ID here
+  const chatId = process.env.TELEGRAM_CHAT_ID;
 
-  const message = `🆔 UID: ${uid}\n💬 ${text}`;
-
-  const telegramRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+  const send = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: message,
-    }),
+    body: JSON.stringify({ chat_id: chatId, text: `👤 ${uid}\n\n📩 ${text}` }),
   });
 
-  const data = await telegramRes.json();
+  const json = await send.json();
 
-  if (data.ok) {
+  if (json.ok) {
     res.status(200).json({ success: true });
   } else {
-    res.status(500).json({ success: false, error: data });
+    res.status(500).json({ success: false });
   }
 }
