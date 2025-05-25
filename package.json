@@ -10,3 +10,9 @@
     "node-fetch": "^3.4.0"
   }
 }
+
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
